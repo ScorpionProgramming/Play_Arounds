@@ -34,22 +34,10 @@ Log::Log(std::string dateiName, bool consoleLog)
 			<< "---------------------------------------------------------------------------\n"
 			<< std::endl;
 	}
-	
-	/**
-		t = time(0);
-	now = localtime(&t);
-	cout	<< "Datum: \t\t" 
-			<< setfill('0') << setw(2) << (now->tm_mday) << '.'
-			<< setfill('0') << setw(2) << (now->tm_mon + 1) << '.' 
-			<< setfill('0') << setw(4) << (now->tm_year + 1900) << endl;
-	cout	<< "Uhrzeit: \t"
-			<< setfill('0') << setw(2) << (now->tm_hour) << ':'
-			<< setfill('0') << setw(2) << (now->tm_min) << ':'
-			<< setfill('0') << setw(2) << (now->tm_sec) << endl;
-	system("pause");
-	*/
 
-	//datei.close();
+	if(datei.is_open()){
+		datei.close();
+	}
 }
 
 void Log::write(std::string text){
@@ -70,8 +58,21 @@ void Log::write(std::string text){
 					<< "\t"+text << "\n"; //text hinzufugen
 	}
 
-	
-	//datei.close();
+	if(datei.is_open()){
+		datei.close();
+	}
+}
+
+void Log::emptyRow(){
+	std::ofstream datei(m_dateiName, std::ios::app);
+
+	if(datei.is_open()){
+		datei << "\n";
+	}
+
+	if(m_consoleLog){
+		std::cout << "\n" << std::endl;
+	}
 }
 
 Log::~Log(void)
@@ -79,7 +80,7 @@ Log::~Log(void)
 	std::ofstream datei(m_dateiName, std::ios::app);
 	m_t = time(0);
 	mpt_now = localtime(&m_t);
-	datei << "Ende des Logs um " 
+	datei << "\nEnde des Logs um " 
 			<< std::setfill('0') << std::setw(2) << (mpt_now->tm_hour) << ':'
 			<< std::setfill('0') << std::setw(2) << (mpt_now->tm_min) << ':'
 			<< std::setfill('0') << std::setw(2) << (mpt_now->tm_sec) << "Uhr.\n";

@@ -15,6 +15,8 @@ private:
 public:
 	Log(std::string dateiName, bool consoleLog);
 	void write(std::string text);
+	void emptyRow();
+
 	~Log(void);
 };
 
